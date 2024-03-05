@@ -2,6 +2,9 @@ import express from 'express';
 import cors from 'cors';
 import connectDB from './config/db.js';
 import ClientRoutes from './routes/index.js';
+import dotenv from 'dotenv';
+
+dotenv.config();
 import { populateDB } from './services/index.js';
 
 const app = express();
