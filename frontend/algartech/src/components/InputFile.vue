@@ -66,7 +66,7 @@ export default {
         formData.append("csvFile", this.csvData);
 
         await axios
-          .post("http://localhost:3333/api/file", formData, {
+          .post(`${process.env.VUE_APP_API}/api/file`, formData, {
             headers: {
               "Content-Type": "multipart/form-data",
             },

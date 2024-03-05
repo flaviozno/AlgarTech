@@ -154,7 +154,7 @@ export default {
     async reloadDB() {
       try {
         const { status } = await axios.get(
-          `http://localhost:3333/api/clients/reload`
+          `${process.env.VUE_APP_API}/api/clients/reload`
         );
         if (status === 200) {
           this.notify();
@@ -167,7 +167,7 @@ export default {
     async updateClient(client, field) {
       if (client) {
         const { data } = await axios.put(
-          `http://localhost:3333/api/clients/${client._id}`,
+          `${process.env.VUE_APP_API}/api/clients/${client._id}`,
           client
         );
 
@@ -186,8 +186,7 @@ export default {
     },
     async fetchData() {
       try {
-        let { data } = await axios.get(`http://localhost:3333/api/clients`);
-        console.log(data)
+        let { data } = await axios.get(`${process.env.VUE_APP_API}/api/clients`);
         data.clients.forEach((client) => {
           client.phone = client.phone
             .replace(/\D/g, "")
@@ -202,7 +201,7 @@ export default {
     async nextPage(currentPage, totalPages) {
       if (currentPage < totalPages) {
         const { data } = await axios.get(
-          `http://localhost:3333/api/clients?page=${currentPage + 1}`
+          `${process.env.VUE_APP_API}/api/clients?page=${currentPage + 1}`
         );
         data.clients.forEach((client) => {
           client.phone = client.phone
@@ -216,7 +215,7 @@ export default {
     async previousPage(currentPage) {
       if (currentPage > 0) {
         const { data } = await axios.get(
-          `http://localhost:3333/api/clients?page=${currentPage - 1}`
+          `${process.env.VUE_APP_API}/api/clients?page=${currentPage - 1}`
         );
         data.clients.forEach((client) => {
           client.phone = client.phone
