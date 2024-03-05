@@ -7,10 +7,22 @@
         placeholder="Filtro..."
         class="p-2 border border-gray-300 rounded-md"
       />
-      <button class="py-2 px-4 bg-gray-200 rounded-md" @click="reloadDB">
-        Reload DB!
-      </button>
+      <div class="flex">
+        <button
+          class="mr-2 py-2 px-4 bg-green-200 rounded-md"
+          @click="reloadDB"
+        >
+          Reload DB!
+        </button>
+        <button
+          class="py-2 px-4 bg-blue-200 rounded-md"
+          @click="showModal = true"
+        >
+          Upload CSV
+        </button>
+      </div>
     </div>
+    <InputFile v-if="showModal" @closeModal="showModal = false" />
     <div class="overflow-x-auto">
       <table class="table-auto w-full">
         <thead>
@@ -80,9 +92,11 @@
 import axios from "axios";
 import { toast } from "vue3-toastify";
 import "vue3-toastify/dist/index.css";
+import InputFile from "./InputFile.vue";
 
 export default {
   name: "TableComponent",
+  components: { InputFile },
   setup() {
     const notify = (field) => {
       if (field) {
@@ -103,6 +117,7 @@ export default {
   },
   data() {
     return {
+      showModal: false,
       searchQuery: "",
       clients: [],
       phone: "",
@@ -132,6 +147,10 @@ export default {
     },
   },
   methods: {
+    closeModal() {
+      this.showModal = false;
+      window.location.reload();
+    },
     async reloadDB() {
       try {
         const { status } = await axios.get(
@@ -168,6 +187,7 @@ export default {
     async fetchData() {
       try {
         let { data } = await axios.get(`http://localhost:3333/api/clients`);
+        console.log(data)
         data.clients.forEach((client) => {
           client.phone = client.phone
             .replace(/\D/g, "")

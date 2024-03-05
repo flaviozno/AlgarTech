@@ -9,7 +9,7 @@ app.use(express.json());
 app.use(cors());
 
 connectDB().then(() => {
-    populateDB('clients.csv');
+    // populateDB('clients.csv');
 
     app.use('/api', ClientRoutes)
 

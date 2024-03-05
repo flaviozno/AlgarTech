@@ -1,14 +1,25 @@
 import { Client } from "../models/index.js";
 import { moneyFormat } from "../utils/index.js";
 import { populateDB } from "../services/index.js";
+import fs from "fs";
 
 export const clientController = {
   reloadDB: async (req, res) => {
     try {
-      Client.deleteMany({})
-        .then(() => console.log("The DB was successfully reloaded!"))
-        .then(() => populateDB("clients.csv"));
-      res.status(200).json({message: 'Reloaded'})
+      Client.deleteMany({}).then(() =>
+        console.log("The DB was successfully reloaded!")
+      );
+      if (
+        fs.access("clients.csv", fs.constants.F_OK, async (err) => {
+          if (err) {
+            console.log("File not foune!");
+            res.status(200).json({ message: "Reloaded" });
+          } else {
+            await populateDB("clients.csv");
+          }
+        })
+      )
+        res.status(200).json({ message: "Reloaded" });
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
